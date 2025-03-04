@@ -1,11 +1,9 @@
 const path = require("path");
 
 module.exports = {
-  root: true,
   // Configuration for JavaScript files
   extends: ["@react-native-community", "plugin:prettier/recommended"],
-  parser: '@typescript-eslint/parser',
-  plugins: ["unicorn", "@typescript-eslint"],
+  plugins: ["unicorn"],
   rules: {
     "prettier/prettier": [
       "error",
@@ -57,9 +55,6 @@ module.exports = {
             caughtErrorsIgnorePattern: "^_",
           },
         ],
-        "@typescript-eslint/no-shadow": ["error"],
-        "no-shadow": "off",
-        "no-undef": "off",
       },
     },
     // Configuration for this exact file

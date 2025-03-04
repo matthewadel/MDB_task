@@ -1,8 +1,7 @@
 {
-  "editor.codeActionsOnSave": [
-    "source.fixAll.eslint",
-    "source.organizeImports"
-  ],
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
   "search.exclude": {
@@ -14,7 +13,11 @@
   "eslint.format.enable": true,
   "[javascript][typescript][typescriptreact]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.codeActionsOnSave": [
+      "source.addMissingImports",
+      "source.fixAll.eslint"
+    ]
   },
   "[json][jsonc]": {
     "editor.formatOnSave": true,
@@ -25,6 +28,6 @@
   "i18n-ally.keystyle": "nested",
   "i18n-ally.disabled": false, // make sure to disable i18n-ally in your global setting and only enable it for such projects
   "[typescriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   } // make sure to disable i18n-ally in your global setting and only enable it for such projects
 }
