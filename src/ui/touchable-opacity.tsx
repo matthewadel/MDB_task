@@ -24,7 +24,7 @@ const TouchableOpacity = React.forwardRef(
       setHeight(height);
     };
 
-    const dynamicOpacity = { opacity: disabled ? 0.5 : 1 };
+    const dynamicOpacity = { opacity: disabled ? 0.7 : 1 };
 
     return (
       <RNTouchableOpacity

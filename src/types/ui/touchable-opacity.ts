@@ -11,4 +11,5 @@ export interface ITouchableOpacity extends TouchableOpacityProps {
   dontClosekeyboard?: boolean;
   textStyle?: StyleProp<TextStyle>;
   textProps?: TextProps;
+  children?: any;
 }
