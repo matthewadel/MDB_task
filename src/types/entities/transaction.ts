@@ -1,8 +1,8 @@
-import { ICategory } from './i-category';
+import { ICategory } from './category';
 
 export interface iTransaction {
   id: number;
-  datetime: Date;
+  date: Date;
   title: string;
   amount: number;
   type: TransactionType;

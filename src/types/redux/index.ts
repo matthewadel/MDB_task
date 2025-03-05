@@ -1,2 +1,2 @@
-export * from './i-category-reducer';
-export * from './i-transaction-reducer';
+export * from './category-reducer';
+export * from './transaction-reducer';
