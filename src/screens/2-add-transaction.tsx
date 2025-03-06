@@ -5,7 +5,6 @@ import { s, vs } from 'react-native-size-matters';
 import { useSelector } from 'react-redux';
 
 import { DateSection } from '@/components';
-import { store } from '@/store';
 import { ICategory, IRootState, TransactionType } from '@/types';
 import {
   Button,
@@ -17,7 +16,7 @@ import {
   View,
 } from '@/ui';
 
-const transactionTypes = [
+const defaultTransactionTypes = [
   { id: 1, label: TransactionType.EXPENSE },
   { id: 2, label: TransactionType.INCOME },
 ];
@@ -26,14 +25,18 @@ const AddTransaction = () => {
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [showErrors, setShowErrors] = useState(false);
+  const [transactionTypes, setTransactionTypes] = useState(
+    defaultTransactionTypes[0],
+  );
+  const [category, setCategory] = useState<ICategory | null>(null);
   const Navigation = useNavigation<any>();
 
   const { Categories }: { Categories?: ICategory[] } = useSelector(
     (state: IRootState) => ({
-      Categories: state.Categories,
+      Categories: state.Categories.categories,
     }),
   );
-  console.log(store.getState());
+
   const validateInputs = () => {
     return false;
   };
@@ -53,18 +56,12 @@ const AddTransaction = () => {
       style={styles.containerStyle}
     >
       <DropDown
-        hasError={true}
-        showErrors={showErrors}
         label={'Transaction Type'}
         placeholder={'Transaction Type'}
-        options={transactionTypes}
-        choose={() => null}
+        options={defaultTransactionTypes}
+        choose={setTransactionTypes}
         style={styles.topOffset}
-        // selectedItem={{
-        //   label: time
-        //     ? `${(time as ITime)?.time_from} - ${(time as ITime)?.time_to}`
-        //     : undefined,
-        // }}
+        selectedItem={defaultTransactionTypes[0]}
       />
 
       <TextInput
@@ -86,13 +83,14 @@ const AddTransaction = () => {
         >
           Create
         </TouchableOpacity>
+
         <DropDown
-          hasError={true}
+          hasError={!category?.id}
           showErrors={showErrors}
           label={'Category'}
           placeholder={'Choose Category'}
-          options={[]}
-          choose={() => null}
+          options={Categories}
+          choose={setCategory}
           // selectedItem={{
           //   label: time
           //     ? `${(time as ITime)?.time_from} - ${(time as ITime)?.time_to}`

@@ -6,7 +6,7 @@ const initialState: ICategoryReducer = {
   categories: [
     {
       id: 1,
-      title: 'general',
+      label: 'general',
     },
   ],
 };
@@ -15,11 +15,17 @@ const CategorySlice = createSlice({
   name: 'Categories',
   initialState,
   reducers: {
-    addCategory(state, action: PayloadAction<ICategory>) {
-      // state.notch = action.payload;
+    addCategory(state, action: PayloadAction<Partial<ICategory>>) {
+      if (action.payload.label)
+        state.categories.push({
+          id: state.categories[state.categories.length - 1].id + 1 || 1,
+          label: action.payload.label,
+        });
     },
     deleteCategory(state, action: PayloadAction<number>) {
-      // state.actualHeight = action.payload;
+      state.categories = state.categories.filter(
+        (item) => item.id !== action.payload,
+      );
     },
   },
 });

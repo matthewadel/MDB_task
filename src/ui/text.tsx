@@ -6,7 +6,13 @@ import { COLORS } from '@/ui';
 
 const Text = (props: TextProps) => {
   return (
-    <RNText allowFontScaling={false} style={styles.textStyle} {...props} />
+    <RNText
+      numberOfLines={1}
+      adjustsFontSizeToFit
+      allowFontScaling={false}
+      style={styles.textStyle}
+      {...props}
+    />
   );
 };
 

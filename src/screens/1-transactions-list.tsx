@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
   },
 });
 
-// create category
+// alert component
+// persist categories
 // create expense
 // delete expense
 // preview all expenses ordered by date
@@ -40,5 +41,6 @@ const styles = StyleSheet.create({
 // filter (date, type)
 // summary view
 // flatlist
+// popover issue in add expense screen
 // test the app in dark mode
 // test keyboard

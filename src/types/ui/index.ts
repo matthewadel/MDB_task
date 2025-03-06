@@ -1,4 +1,5 @@
 export * from './button';
+export * from './flash-message';
 export * from './image';
 export * from './loading-screen';
 export * from './no-data';
