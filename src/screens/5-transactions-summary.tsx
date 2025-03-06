@@ -48,28 +48,29 @@ const TransactionsSummary = () => {
       else temp_total_income += item.amount;
     });
 
-    setIncomeExpensesChartData([
-      {
-        value: temp_total_expenses,
-        color: COLORS.Red,
-        label: {
-          text: getPercentageValue(
-            temp_total_expenses,
-            temp_total_expenses + temp_total_income,
-          ),
+    if (temp_total_expenses > 0 || temp_total_income > 0)
+      setIncomeExpensesChartData([
+        {
+          value: temp_total_expenses,
+          color: COLORS.Red,
+          label: {
+            text: getPercentageValue(
+              temp_total_expenses,
+              temp_total_expenses + temp_total_income,
+            ),
+          },
         },
-      },
-      {
-        value: temp_total_income,
-        color: COLORS.Green,
-        label: {
-          text: getPercentageValue(
-            temp_total_income,
-            temp_total_expenses + temp_total_income,
-          ),
+        {
+          value: temp_total_income,
+          color: COLORS.Green,
+          label: {
+            text: getPercentageValue(
+              temp_total_income,
+              temp_total_expenses + temp_total_income,
+            ),
+          },
         },
-      },
-    ]);
+      ]);
 
     setTotalExpenses(temp_total_expenses);
   }, [transactions]);
@@ -90,20 +91,21 @@ const TransactionsSummary = () => {
     });
 
     let tempCategories: ICategory[] = [];
-    setExpensesPerCat(
-      Object.entries(amountPerCategory).map((item) => {
-        tempCategories.push({
-          name: item[0],
-          value: item[1],
-          color: generateColor(item[1], temptotalExpenses),
-        });
-        return {
-          value: item[1],
-          color: generateColor(item[1], temptotalExpenses),
-          label: { text: getPercentageValue(item[1], temptotalExpenses) },
-        };
-      }),
-    );
+    if (Object.entries(amountPerCategory)?.length)
+      setExpensesPerCat(
+        Object.entries(amountPerCategory).map((item) => {
+          tempCategories.push({
+            name: item[0],
+            value: item[1],
+            color: generateColor(item[1], temptotalExpenses),
+          });
+          return {
+            value: item[1],
+            color: generateColor(item[1], temptotalExpenses),
+            label: { text: getPercentageValue(item[1], temptotalExpenses) },
+          };
+        }),
+      );
 
     setCategories(tempCategories);
   }, [transactions]);

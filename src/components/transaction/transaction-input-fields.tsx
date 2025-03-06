@@ -1,14 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import React, {
   forwardRef,
-  Fragment,
   useCallback,
   useEffect,
   useImperativeHandle,
   useRef,
   useState,
 } from 'react';
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { s, vs } from 'react-native-size-matters';
 import { useSelector } from 'react-redux';
 
@@ -85,7 +84,10 @@ const TransactionInputFields = forwardRef((props: ITransactionFields, ref) => {
   }, [category?.id]);
 
   return (
-    <Fragment>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={styles.scrollviewStyle}
+    >
       <DropDown
         label={'Transaction Type'}
         placeholder={'Transaction Type'}
@@ -134,7 +136,7 @@ const TransactionInputFields = forwardRef((props: ITransactionFields, ref) => {
         style={styles.decriptionInputStyle}
         containerStyle={styles.topOffset}
       />
-    </Fragment>
+    </ScrollView>
   );
 });
 
@@ -155,4 +157,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textDecorationLine: 'underline',
   },
+  scrollviewStyle: { width: '100%', overflow: 'visible' },
 });

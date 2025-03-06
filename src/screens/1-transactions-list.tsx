@@ -114,5 +114,3 @@ const styles = StyleSheet.create({
 });
 
 // popover issue in add expense screen
-// test the app in dark mode
-// test keyboard

@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { IScreenContainer } from '@/types';
@@ -9,13 +15,20 @@ const ScreenContainer = (props: IScreenContainer) => {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={styles.safeArea}>
       <ScreenHeader {...props.screenHeaderProps} />
-      {props.loading ? (
-        <LoadingScreen />
-      ) : (
-        <View style={{ ...styles.containerStyle, ...props.style }}>
-          {props.children}
-        </View>
-      )}
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === 'android' ? undefined : 'padding'}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          {props.loading ? (
+            <LoadingScreen />
+          ) : (
+            <View style={{ ...styles.containerStyle, ...props.style }}>
+              {props.children}
+            </View>
+          )}
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -28,5 +41,9 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     paddingHorizontal: CONSTANTS.PADDING_HORIZONTAL,
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+    width: '100%',
   },
 });
