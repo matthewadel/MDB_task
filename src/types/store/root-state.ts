@@ -1,4 +1,4 @@
-import { rootReducer } from '@/redux';
+import { rootReducer } from '@/store';
 
 export type IRootState = ReturnType<typeof rootReducer>;
 

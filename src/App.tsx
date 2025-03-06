@@ -3,7 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 
 import { MainStack } from './navigation/main-stack';
-import { store } from './redux';
+import { store } from './store';
 
 const app = () => {
   return (

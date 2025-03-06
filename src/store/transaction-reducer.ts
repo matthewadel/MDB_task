@@ -21,4 +21,4 @@ const TransactionSlice = createSlice({
 
 export const { addTransaction, deleteTransaction } = TransactionSlice.actions;
 
-export const TransactionReducer = TransactionSlice.reducer;
+export default TransactionSlice.reducer;

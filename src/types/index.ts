@@ -1,3 +1,3 @@
 export * from './entities';
-export * from './redux';
+export * from './store';
 export * from './ui';

@@ -2,10 +2,11 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { s, vs } from 'react-native-size-matters';
+import { useSelector } from 'react-redux';
 
 import { DateSection } from '@/components';
-import { store } from '@/redux';
-import { TransactionType } from '@/types';
+import { store } from '@/store';
+import { ICategory, IRootState, TransactionType } from '@/types';
 import {
   Button,
   COLORS,
@@ -27,11 +28,11 @@ const AddTransaction = () => {
   const [showErrors, setShowErrors] = useState(false);
   const Navigation = useNavigation<any>();
 
-  // const { Categories }: { Categories?: ICategory[] } = useSelector(
-  //   (state: IRootState) => ({
-  //     Categories: state.Categories.categories,
-  //   }),
-  // );
+  const { Categories }: { Categories?: ICategory[] } = useSelector(
+    (state: IRootState) => ({
+      Categories: state.Categories,
+    }),
+  );
   console.log(store.getState());
   const validateInputs = () => {
     return false;
