@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     borderRadius: s(10),
     paddingHorizontal: s(6),
     paddingVertical: vs(8),
-    marginBottom: vs(7),
+    marginBottom: vs(10),
     ...ShadowStyle,
   },
   rowStyle: {

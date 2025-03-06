@@ -68,12 +68,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: s(8),
     fontSize: s(14),
     height: vs(35),
-    marginTop: vs(8),
     borderRadius: s(6),
     ...ShadowStyle,
   },
   errorTextInputStyle: { borderColor: COLORS.Error, borderWidth: 1 },
-  titleStyle: { fontWeight: 'bold' },
+  titleStyle: { fontWeight: 'bold', marginBottom: vs(8) },
   errorMsg: {
     marginLeft: s(4),
     marginTop: vs(2),

@@ -23,7 +23,7 @@ const ScreenContainer = (props: IScreenContainer) => {
 export { ScreenContainer };
 
 const styles = StyleSheet.create({
-  safeArea: { height: '100%', backgroundColor: COLORS.White },
+  safeArea: { height: '100%', backgroundColor: COLORS.White, width: '100%' },
   containerStyle: {
     flex: 1,
     width: '100%',

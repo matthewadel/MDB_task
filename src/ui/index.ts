@@ -1,5 +1,6 @@
 export * from './activity-indicator';
 export * from './alert';
+export * from './bottom-sheet';
 export * from './button';
 export * from './colors';
 export * from './constants';

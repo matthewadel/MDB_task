@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -13,11 +14,13 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaProvider>
-          <NavigationContainer>
-            <FlashMessageProvider />
-            <AlertProvider />
-            <MainStack />
-          </NavigationContainer>
+          <GestureHandlerRootView>
+            <NavigationContainer>
+              <FlashMessageProvider />
+              <AlertProvider />
+              <MainStack />
+            </NavigationContainer>
+          </GestureHandlerRootView>
         </SafeAreaProvider>
       </PersistGate>
     </Provider>
