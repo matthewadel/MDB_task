@@ -11,10 +11,13 @@ const TransactionSlice = createSlice({
   initialState,
   reducers: {
     addTransaction(state, action: PayloadAction<ITransaction>) {
-      state.transactions.push({
+      state.transactions.unshift({
         ...action.payload,
-        id: (state.transactions[state.transactions.length - 1]?.id || 0) + 1,
+        id: Math.random(),
       });
+      state.transactions = state.transactions.sort((a, b) =>
+        a.date > b.date ? -1 : 1,
+      );
     },
     deleteTransaction(state, action: PayloadAction<{ id?: number }>) {
       if (action.payload.id)

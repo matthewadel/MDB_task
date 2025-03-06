@@ -18,7 +18,7 @@ const CategorySlice = createSlice({
     addCategory(state, action: PayloadAction<Partial<ICategory>>) {
       if (action.payload.label)
         state.categories.push({
-          id: (state.categories[state.categories.length - 1]?.id || 0) + 1,
+          id: Math.random(),
           label: action.payload.label,
         });
     },

@@ -3,16 +3,14 @@ import {
   LayoutChangeEvent,
   ScrollView,
   StyleSheet,
-  TextProps,
   useWindowDimensions,
-  ViewStyle,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { Popover as RNPopover } from 'react-native-modal-popover';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { s, vs } from 'react-native-size-matters';
 
-import { ITouchableOpacity } from '@/types';
+import { IDropDown, IOption } from '@/types';
 import {
   COLORS,
   CONSTANTS,
@@ -25,30 +23,6 @@ import {
   View,
 } from '@/ui';
 
-interface IOption {
-  id: number;
-  label: string;
-}
-
-export interface IDropDown extends ITouchableOpacity {
-  hasError?: boolean;
-  showErrors?: boolean;
-  errorMessage?: string;
-  choose: Function;
-  contentStyle?: ViewStyle;
-  optionStyle?: ViewStyle;
-  optionTextStyle?: TextProps;
-  optionComponent?: Function;
-  options: IOption[];
-  selectedItem?: any;
-  placeHolderComponentstyle?: any;
-  placement?: any;
-  placeholderTextStyle?: any;
-  placeholder?: string;
-  label?: string;
-  labelStyle?: any;
-}
-
 const DropDown = (props: IDropDown) => {
   const { height: HEIGHT, width: WIDTH } = useWindowDimensions();
   const [showPopover, setShowPopover] = useState(false);
@@ -60,8 +34,6 @@ const DropDown = (props: IDropDown) => {
   });
   const [selectedItem, setSelectedItem] = useState(props.selectedItem);
   const { top } = useSafeAreaInsets();
-
-  let hasError = props?.showErrors && props?.hasError;
 
   const setButton = (e: LayoutChangeEvent) => {
     let { x, y, width, height } = e.nativeEvent.layout;
@@ -81,7 +53,7 @@ const DropDown = (props: IDropDown) => {
         <Text
           style={[
             styles.label,
-            { color: hasError ? COLORS.Error : COLORS.Dark },
+            { color: props?.hasError ? COLORS.Error : COLORS.Dark },
             props.labelStyle,
           ]}
         >
@@ -90,11 +62,11 @@ const DropDown = (props: IDropDown) => {
 
         <TouchableOpacity onPress={openPopover} activeOpacity={0.8}>
           <Animatable.View
-            animation={props?.showErrors ? 'shake' : ''}
+            animation={props?.hasError ? 'shake' : ''}
             style={[
               styles.placeholderContainer,
               ShadowStyle,
-              hasError ? styles.placehoderContainerErrorStyle : {},
+              props?.hasError ? styles.placehoderContainerErrorStyle : {},
               props.placeHolderComponentstyle,
             ]}
           >
@@ -104,7 +76,7 @@ const DropDown = (props: IDropDown) => {
                 {
                   color: selectedItem?.label
                     ? COLORS.Dark
-                    : hasError
+                    : props?.hasError
                       ? COLORS.Error
                       : '#A7A7A7',
                 },
@@ -117,13 +89,13 @@ const DropDown = (props: IDropDown) => {
             <VectorIcons
               icon={ICONS.Ionicons}
               name="caret-down-outline"
-              color={hasError ? COLORS.Error : COLORS.Primary}
+              color={props?.hasError ? COLORS.Error : COLORS.Primary}
               size={s(20)}
             />
           </Animatable.View>
         </TouchableOpacity>
 
-        {hasError && !!props?.errorMessage && (
+        {props?.hasError && !!props?.errorMessage && (
           <Text style={styles.errorMsg}>*{props?.errorMessage}</Text>
         )}
       </View>

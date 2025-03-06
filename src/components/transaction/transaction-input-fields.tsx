@@ -3,6 +3,7 @@ import React, {
   forwardRef,
   Fragment,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -30,10 +31,10 @@ const TransactionInputFields = forwardRef((props: ITransactionFields, ref) => {
   const [amount, setAmount] = useState(
     props.transaction.amount?.toString() || '',
   );
+  const [amountHasError, setAmountHasError] = useState(false);
   const [description, setDescription] = useState(
     props.transaction.description || '',
   );
-  const [showErrors, setShowErrors] = useState(false);
   const DateSectionRef = useRef<{ getDate: Function }>(null);
 
   const [transactionType, setTransactionType] = useState(
@@ -46,6 +47,7 @@ const TransactionInputFields = forwardRef((props: ITransactionFields, ref) => {
   const [category, setCategory] = useState<ICategory | undefined>(
     props.transaction.category,
   );
+  const [categoryHasError, setCategoryHasError] = useState(false);
   const { Categories }: { Categories?: ICategory[] } = useSelector(
     (state: IRootState) => ({
       Categories: state.Categories.categories,
@@ -53,12 +55,10 @@ const TransactionInputFields = forwardRef((props: ITransactionFields, ref) => {
   );
 
   const validateInputs = useCallback(() => {
-    setShowErrors(false);
     if (!!amount && !!category?.id) return true;
     else {
-      setTimeout(() => {
-        setShowErrors(true);
-      }, 100);
+      if (!amount) setAmountHasError(true);
+      if (!category?.id) setCategoryHasError(true);
       return false;
     }
   }, [amount, category?.id]);
@@ -76,6 +76,14 @@ const TransactionInputFields = forwardRef((props: ITransactionFields, ref) => {
     [amount, category, description, transactionType, validateInputs],
   );
 
+  useEffect(() => {
+    setAmountHasError(false);
+  }, [amount]);
+
+  useEffect(() => {
+    setCategoryHasError(false);
+  }, [category?.id]);
+
   return (
     <Fragment>
       <DropDown
@@ -88,9 +96,8 @@ const TransactionInputFields = forwardRef((props: ITransactionFields, ref) => {
       />
 
       <TextInput
-        hasError={!amount}
+        hasError={amountHasError}
         errorMessage={'Amount Is Required'}
-        showErrors={showErrors}
         title="Amount"
         value={amount}
         onChangeText={setAmount}
@@ -108,8 +115,7 @@ const TransactionInputFields = forwardRef((props: ITransactionFields, ref) => {
         </TouchableOpacity>
 
         <DropDown
-          hasError={!category?.id}
-          showErrors={showErrors}
+          hasError={categoryHasError}
           label={'Category'}
           placeholder={'Choose Category'}
           options={Categories}

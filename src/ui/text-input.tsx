@@ -9,8 +9,6 @@ import { COLORS, ShadowStyle, Text } from '@/ui';
 
 const TextInput = React.forwardRef(
   (props?: ITextInput, ref?: Ref<RNTextInput>) => {
-    let hasError = props?.showErrors && props?.hasError;
-
     const onChangeText = (text: string) => {
       if (props?.onChangeText)
         if (
@@ -22,14 +20,14 @@ const TextInput = React.forwardRef(
     };
     return (
       <Animatable.View
-        animation={props?.showErrors ? 'shake' : ''}
+        animation={props?.hasError ? 'shake' : ''}
         style={{ ...styles.containerStyle, ...props?.containerStyle }}
       >
         {!!props?.title && (
           <Text
             style={{
               ...styles.titleStyle,
-              color: hasError ? COLORS.Error : COLORS.Dark,
+              color: props?.hasError ? COLORS.Error : COLORS.Dark,
             }}
           >
             {props?.title}
@@ -40,21 +38,21 @@ const TextInput = React.forwardRef(
           autoCorrect={false}
           autoCapitalize={'none'}
           placeholderTextColor={
-            hasError ? COLORS.Error : COLORS.PlaceholderTextColor
+            props?.hasError ? COLORS.Error : COLORS.PlaceholderTextColor
           }
           {...props}
           style={[
             styles.textInputStyle,
             props?.style,
             {
-              color: hasError ? COLORS.Error : COLORS.Dark,
+              color: props?.hasError ? COLORS.Error : COLORS.Dark,
             },
-            hasError ? styles.errorTextInputStyle : {},
+            props?.hasError ? styles.errorTextInputStyle : {},
           ]}
           onChangeText={onChangeText}
         />
 
-        {hasError && !!props?.errorMessage && (
+        {props?.hasError && !!props?.errorMessage && (
           <Text style={styles.errorMsg}>*{props?.errorMessage}</Text>
         )}
       </Animatable.View>

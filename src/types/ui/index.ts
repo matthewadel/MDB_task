@@ -1,4 +1,5 @@
 export * from './button';
+export * from './drop-down';
 export * from './flash-message';
 export * from './image';
 export * from './loading-screen';

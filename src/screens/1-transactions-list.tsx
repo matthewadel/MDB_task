@@ -16,9 +16,18 @@ const TransactionList = () => {
     }),
   );
 
-  const renderTransaction = useCallback(({ item }: { item: ITransaction }) => {
-    return <TransactionCard transaction={item} key={item.id} />;
-  }, []);
+  const renderTransaction = useCallback(
+    ({ item, index }: { item: ITransaction; index: number }) => {
+      return (
+        <TransactionCard
+          showDate={!index || item.date !== transactions[index - 1].date}
+          transaction={item}
+          key={item.id}
+        />
+      );
+    },
+    [],
+  );
 
   return (
     <ScreenContainer screenHeaderProps={{ title: 'Transaction List' }}>
@@ -26,6 +35,7 @@ const TransactionList = () => {
         data={transactions}
         renderItem={renderTransaction}
         style={styles.flatlistStyle}
+        contentContainerStyle={{ paddingBottom: vs(60) }}
       />
       <VectorIcons
         icon={ICONS.AntDesign}
@@ -54,7 +64,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// preview all expenses ordered by date
 // sort (date, tyoe)
 // filter (date, type)
 // summary view

@@ -5,5 +5,4 @@ export interface ITextInput extends TextInputProps {
   title?: string;
   hasError?: boolean;
   errorMessage?: string;
-  showErrors?: boolean;
 }
