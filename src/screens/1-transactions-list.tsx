@@ -1,10 +1,9 @@
 // import { BottomSheet as RNBottomSheet } from '@gorhom/bottom-sheet';
 import RNBottomSheet from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import { s, vs } from 'react-native-size-matters';
-import { useSelector } from 'react-redux';
 
 import {
   FilterModal,
@@ -12,7 +11,8 @@ import {
   SortModal,
   TransactionCard,
 } from '@/components';
-import { IRootState, ITransaction, TransactionType } from '@/types';
+import { useFilterSortTransactions } from '@/hooks';
+import { ITransaction, TransactionType } from '@/types';
 import {
   BottomSheet,
   COLORS,
@@ -31,14 +31,8 @@ const TransactionList = () => {
   const SortModalRef = useRef<{ resetOptions: Function }>(null);
   const FilterModalRef = useRef<{ resetOptions: Function }>(null);
   const DatePickerRef = useRef<{ openModal: () => void }>(null);
-  const [dateFilter, setDateFilter] = useState<string>();
-
-  const { transactions }: { transactions?: ITransaction[] } = useSelector(
-    (state: IRootState) => ({
-      transactions: state.Transactions.transactions,
-    }),
-  );
-  const [data, setData] = useState(transactions);
+  const { data, sortTransactions, filterTransactions, setDateFilter } =
+    useFilterSortTransactions(DatePickerRef);
 
   const renderTransaction = useCallback(
     ({ item, index }: { item: ITransaction; index: number }) => {
@@ -54,33 +48,16 @@ const TransactionList = () => {
   );
 
   const onSort = (orderBy: 'Descending' | 'Ascending') => {
-    setData(
-      orderBy === 'Descending'
-        ? [...transactions]
-        : [...transactions].reverse(),
-    );
-
+    sortTransactions(orderBy);
     SortBottomSheetRef.current?.collapse();
     FilterModalRef.current?.resetOptions();
   };
 
   const onFIlter = (filterType: 'Date' | 'Type', filterBy: TransactionType) => {
-    if (filterType === 'Type') {
-      setData([...transactions.filter((item) => item.type === filterBy)]);
-    } else if (filterType === 'Date')
-      setTimeout(() => {
-        DatePickerRef.current?.openModal();
-      }, 200);
-    else onSort('Descending');
-
+    filterTransactions(filterType, filterBy);
     FilterBottomSheetRef.current?.collapse();
     SortModalRef.current?.resetOptions();
   };
-
-  useEffect(() => {
-    if (dateFilter)
-      setData([...transactions.filter((item) => item.date === dateFilter)]);
-  }, [dateFilter, transactions]);
 
   return (
     <ScreenContainer screenHeaderProps={{ title: 'Transaction List' }}>
@@ -140,4 +117,3 @@ const styles = StyleSheet.create({
 // test the app in dark mode
 // test keyboard
 // fading splash screen
-// export sort and filter in custom hook

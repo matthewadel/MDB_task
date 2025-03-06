@@ -14,6 +14,7 @@ export const MainStack = () => {
       }}
       initialRouteName="TransactionList"
     >
+      <Stack.Screen name="Splash" component={Screens.Splash} />
       <Stack.Screen
         name="TransactionList"
         component={Screens.TransactionList}
