@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import { closeAlert, showAlert } from 'react-native-customisable-alert';
 import { showMessage } from 'react-native-flash-message';
 import { s, vs } from 'react-native-size-matters';
 import { useDispatch } from 'react-redux';
@@ -11,11 +12,23 @@ import { COLORS, ICONS, Text, VectorIcons, View } from '@/ui';
 const CategoryCard = ({ category }: { category: ICategory }) => {
   const dispatch = useDispatch();
 
+  const deleteCategoryWarning = () => {
+    showAlert({
+      title: 'Are you sure?',
+      message: `${category.label} Category Will Be Deleted!`,
+      alertType: 'warning',
+      onPress: deleteCategoryByID,
+    });
+  };
+
   const deleteCategoryByID = () => {
     dispatch(deleteCategory(category.id));
-    showMessage({
-      message: 'Category Deleted Successfully',
-    });
+    closeAlert();
+    setTimeout(() => {
+      showMessage({
+        message: 'Category Deleted Successfully',
+      });
+    }, 100);
   };
 
   return (
@@ -26,7 +39,7 @@ const CategoryCard = ({ category }: { category: ICategory }) => {
         name="trash"
         color={COLORS.Red}
         size={s(15)}
-        onPress={deleteCategoryByID}
+        onPress={deleteCategoryWarning}
       />
     </View>
   );

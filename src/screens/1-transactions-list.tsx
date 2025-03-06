@@ -32,8 +32,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// alert component
-// persist categories
 // create expense
 // delete expense
 // preview all expenses ordered by date

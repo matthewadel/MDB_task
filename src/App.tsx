@@ -2,22 +2,26 @@ import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import { MainStack } from './navigation/main-stack';
-import { store } from './store';
-import { FlashMessageProvider } from './ui/flash-message';
+import { MainStack } from '@/navigation/main-stack';
+import { persistor, store } from '@/store';
+import { Alert, FlashMessageProvider } from '@/ui';
 
-const app = () => {
+const App = () => {
   return (
     <Provider store={store}>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <FlashMessageProvider />
-          <MainStack />
-        </NavigationContainer>
-      </SafeAreaProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <FlashMessageProvider />
+            <Alert />
+            <MainStack />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </PersistGate>
     </Provider>
   );
 };
 
-export default app;
+export default App;
