@@ -2,6 +2,7 @@ export * from './activity-indicator';
 export * from './button';
 export * from './colors';
 export * from './constants';
+export * from './drop-down';
 export * from './image';
 export * from './loading-screen';
 export * from './no-data';

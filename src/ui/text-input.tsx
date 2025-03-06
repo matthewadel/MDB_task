@@ -54,16 +54,9 @@ const TextInput = React.forwardRef(
           onChangeText={onChangeText}
         />
 
-        <Text
-          style={{
-            marginLeft: s(4),
-            marginTop: vs(2),
-            fontSize: s(12),
-            color: hasError ? COLORS.Error : COLORS.White,
-          }}
-        >
-          *{props?.errorMessage}
-        </Text>
+        {hasError && !!props?.errorMessage && (
+          <Text style={styles.errorMsg}>*{props?.errorMessage}</Text>
+        )}
       </Animatable.View>
     );
   },
@@ -75,11 +68,18 @@ const styles = StyleSheet.create({
   containerStyle: { width: '100%' },
   textInputStyle: {
     paddingHorizontal: s(8),
-    paddingVertical: vs(7),
+    fontSize: s(14),
+    height: vs(35),
     marginTop: vs(8),
     borderRadius: s(6),
     ...ShadowStyle,
   },
   errorTextInputStyle: { borderColor: COLORS.Error, borderWidth: 1 },
   titleStyle: { fontWeight: 'bold' },
+  errorMsg: {
+    marginLeft: s(4),
+    marginTop: vs(2),
+    fontSize: s(12),
+    color: COLORS.Error,
+  },
 });

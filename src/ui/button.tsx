@@ -18,7 +18,11 @@ const Button = (props?: IButton) => {
       ]}
       style={[
         props?.type === 'SECONDARY'
-          ? { backgroundColor: COLORS.White }
+          ? {
+              backgroundColor: COLORS.White,
+              borderWidth: 1,
+              borderColor: COLORS.Primary,
+            }
           : { backgroundColor: COLORS.Primary },
         styles.buttonStyle,
         props?.style,
@@ -34,8 +38,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: s(13),
     borderRadius: s(7),
     paddingVertical: vs(10),
-    borderWidth: 1,
-    borderColor: COLORS.Primary,
   },
   textStyle: { fontWeight: 'bold' },
 });

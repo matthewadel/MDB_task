@@ -1,6 +1,7 @@
 import React, { Ref, useState } from 'react';
 import {
   Keyboard,
+  LayoutChangeEvent,
   StyleSheet,
   TouchableOpacity as RNTouchableOpacity,
   View,
@@ -16,9 +17,8 @@ const TouchableOpacity = React.forwardRef(
     let [Width, setWidth] = useState(0);
     let [Height, setHeight] = useState(0);
 
-    const onLayout = (event: {
-      nativeEvent: { layout: { width: number; height: number } };
-    }) => {
+    const onLayout = (event: LayoutChangeEvent) => {
+      props?.onLayout?.(event);
       const { height, width } = event.nativeEvent.layout;
       setWidth(width);
       setHeight(height);
@@ -28,9 +28,9 @@ const TouchableOpacity = React.forwardRef(
 
     return (
       <RNTouchableOpacity
-        onLayout={(event) => onLayout(event)}
         ref={ref}
         {...props}
+        onLayout={(event) => onLayout(event)}
         onPress={(pressProps) => {
           !props.dontClosekeyboard && Keyboard.dismiss();
           props.onPress && props.onPress(pressProps);

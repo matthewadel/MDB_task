@@ -19,6 +19,7 @@ export const MainStack = () => {
         component={Screens.TransactionList}
       />
       <Stack.Screen name="AddTransaction" component={Screens.AddTransaction} />
+      <Stack.Screen name="CreateCategory" component={Screens.CreateCategory} />
       <Stack.Screen
         name="TransactionsSummary"
         component={Screens.TransactionsSummary}

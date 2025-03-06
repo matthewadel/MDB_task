@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { vs } from 'react-native-size-matters';
 
-import { Button, ScreenContainer, TextInput } from '@/ui';
+import { Button, DropDown, ScreenContainer, TextInput } from '@/ui';
 
 const AddTransaction = () => {
   const [amount, setAmount] = useState('');
-  // const [amountHasError, setAmountHasError] = useState(false);
+  const [description, setDescription] = useState('');
   const [showErrors, setShowErrors] = useState(false);
   const Navigation = useNavigation<any>();
 
@@ -35,11 +35,44 @@ const AddTransaction = () => {
         showErrors={showErrors}
         title="Amount"
         value={amount}
-        onChangeText={(txt) => {
-          // setAmountHasError(false);
-          setAmount(txt);
-        }}
+        onChangeText={setAmount}
         placeholder="Add Amount"
+      />
+
+      <DropDown
+        hasError={true}
+        showErrors={showErrors}
+        label={'Transaction Type'}
+        placeholder={'Transaction Type'}
+        options={[{ id: 1, label: 'ss' }]}
+        choose={() => null}
+        // selectedItem={{
+        //   label: time
+        //     ? `${(time as ITime)?.time_from} - ${(time as ITime)?.time_to}`
+        //     : undefined,
+        // }}
+      />
+
+      <DropDown
+        hasError={true}
+        showErrors={showErrors}
+        label={'Transaction Type'}
+        placeholder={'Transaction Type'}
+        options={[{ id: 1, label: 'ss' }]}
+        choose={() => null}
+        // selectedItem={{
+        //   label: time
+        //     ? `${(time as ITime)?.time_from} - ${(time as ITime)?.time_to}`
+        //     : undefined,
+        // }}
+      />
+
+      <TextInput
+        title="Description (optional)"
+        value={description}
+        onChangeText={setDescription}
+        placeholder="Write A Description"
+        style={{ height: vs(80) }}
       />
 
       <Button onPress={addTransaction} style={{ marginBottom: vs(10) }}>
