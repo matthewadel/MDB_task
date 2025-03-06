@@ -88,38 +88,40 @@ const DropDown = (props: IDropDown) => {
           {props.label}
         </Text>
 
-        <Animatable.View
-          animation={props?.showErrors ? 'shake' : ''}
-          style={[
-            styles.placeholderContainer,
-            ShadowStyle,
-            hasError ? styles.placehoderContainerErrorStyle : {},
-            props.placeHolderComponentstyle,
-          ]}
-        >
-          <Text
+        <TouchableOpacity onPress={openPopover} activeOpacity={0.8}>
+          <Animatable.View
+            animation={props?.showErrors ? 'shake' : ''}
             style={[
-              styles.placeholderText,
-              {
-                color: selectedItem?.label
-                  ? COLORS.Dark
-                  : hasError
-                    ? COLORS.Error
-                    : '#A7A7A7',
-              },
-              props.placeholderTextStyle,
+              styles.placeholderContainer,
+              ShadowStyle,
+              hasError ? styles.placehoderContainerErrorStyle : {},
+              props.placeHolderComponentstyle,
             ]}
           >
-            {selectedItem?.label ? selectedItem?.label : props.placeholder}
-          </Text>
+            <Text
+              style={[
+                styles.placeholderText,
+                {
+                  color: selectedItem?.label
+                    ? COLORS.Dark
+                    : hasError
+                      ? COLORS.Error
+                      : '#A7A7A7',
+                },
+                props.placeholderTextStyle,
+              ]}
+            >
+              {selectedItem?.label ? selectedItem?.label : props.placeholder}
+            </Text>
 
-          <VectorIcons
-            icon={ICONS.Ionicons}
-            name="caret-down-outline"
-            color={hasError ? COLORS.Error : COLORS.Primary}
-            size={s(20)}
-          />
-        </Animatable.View>
+            <VectorIcons
+              icon={ICONS.Ionicons}
+              name="caret-down-outline"
+              color={hasError ? COLORS.Error : COLORS.Primary}
+              size={s(20)}
+            />
+          </Animatable.View>
+        </TouchableOpacity>
 
         {hasError && !!props?.errorMessage && (
           <Text style={styles.errorMsg}>*{props?.errorMessage}</Text>
@@ -130,16 +132,7 @@ const DropDown = (props: IDropDown) => {
 
   return (
     <React.Fragment>
-      <TouchableOpacity
-        activeOpacity={0.8}
-        disabled={props.disabled}
-        textStyle={props.textStyle}
-        onPress={openPopover}
-        style={[styles.touchable, props.style]}
-      >
-        {props.children ? props.children : renderPlaceholderComponent()}
-      </TouchableOpacity>
-
+      {renderPlaceholderComponent()}
       <View onLayout={setButton} />
 
       <RNPopover
@@ -175,7 +168,13 @@ const DropDown = (props: IDropDown) => {
                     setSelectedItem(item);
                     props.choose(item, i);
                   }}
-                  style={[styles.option, props.optionStyle]}
+                  style={[
+                    styles.option,
+                    {
+                      borderBottomWidth: i === props.options.length - 1 ? 0 : 1,
+                    },
+                    props.optionStyle,
+                  ]}
                 >
                   {props.optionComponent
                     ? props.optionComponent(item)
@@ -211,11 +210,6 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     color: COLORS.PlaceholderTextColor,
   },
-  touchable: {
-    justifyContent: 'center',
-    width: '100%',
-    alignItems: 'center',
-  },
   popoverContent: {
     // position: 'relative',
     margin: 0,
@@ -237,7 +231,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     borderColor: '#DCDCDC',
-    paddingVertical: s(6),
+    paddingVertical: s(10),
   },
   optionText: {
     fontSize: s(14),

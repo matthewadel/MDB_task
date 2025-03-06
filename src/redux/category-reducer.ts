@@ -3,7 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ICategory, ICategoryReducer } from '@/types';
 
 const initialState: ICategoryReducer = {
-  categories: [],
+  categories: [
+    {
+      id: 1,
+      title: 'general',
+    },
+  ],
 };
 
 const CategorySlice = createSlice({

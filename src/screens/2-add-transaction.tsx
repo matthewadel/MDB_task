@@ -1,10 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { vs } from 'react-native-size-matters';
+import { s, vs } from 'react-native-size-matters';
 
 import { DateSection } from '@/components';
-import { Button, DropDown, ScreenContainer, TextInput } from '@/ui';
+import { store } from '@/redux';
+import { TransactionType } from '@/types';
+import {
+  Button,
+  COLORS,
+  DropDown,
+  ScreenContainer,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from '@/ui';
+
+const transactionTypes = [
+  { id: 1, label: TransactionType.EXPENSE },
+  { id: 2, label: TransactionType.INCOME },
+];
 
 const AddTransaction = () => {
   const [amount, setAmount] = useState('');
@@ -12,6 +27,12 @@ const AddTransaction = () => {
   const [showErrors, setShowErrors] = useState(false);
   const Navigation = useNavigation<any>();
 
+  // const { Categories }: { Categories?: ICategory[] } = useSelector(
+  //   (state: IRootState) => ({
+  //     Categories: state.Categories.categories,
+  //   }),
+  // );
+  console.log(store.getState());
   const validateInputs = () => {
     return false;
   };
@@ -35,7 +56,7 @@ const AddTransaction = () => {
         showErrors={showErrors}
         label={'Transaction Type'}
         placeholder={'Transaction Type'}
-        options={[{ id: 1, label: 'ss' }]}
+        options={transactionTypes}
         choose={() => null}
         style={styles.topOffset}
         // selectedItem={{
@@ -56,20 +77,28 @@ const AddTransaction = () => {
         containerStyle={styles.topOffset}
       />
 
-      <DropDown
-        hasError={true}
-        showErrors={showErrors}
-        label={'Category'}
-        placeholder={'Choose Category'}
-        options={[{ id: 1, label: 'ss' }]}
-        choose={() => null}
-        style={styles.topOffset}
-        // selectedItem={{
-        //   label: time
-        //     ? `${(time as ITime)?.time_from} - ${(time as ITime)?.time_to}`
-        //     : undefined,
-        // }}
-      />
+      <View style={{ ...styles.topOffset, ...styles.categoryContainer }}>
+        <TouchableOpacity
+          onPress={() => Navigation.navigate('CreateCategory')}
+          style={styles.createCategoryButton}
+          textStyle={styles.createCategoryText}
+        >
+          Create
+        </TouchableOpacity>
+        <DropDown
+          hasError={true}
+          showErrors={showErrors}
+          label={'Category'}
+          placeholder={'Choose Category'}
+          options={[]}
+          choose={() => null}
+          // selectedItem={{
+          //   label: time
+          //     ? `${(time as ITime)?.time_from} - ${(time as ITime)?.time_to}`
+          //     : undefined,
+          // }}
+        />
+      </View>
 
       <DateSection />
 
@@ -95,4 +124,16 @@ const styles = StyleSheet.create({
   containerStyle: { alignItems: 'center' },
   topOffset: { marginTop: vs(20) },
   decriptionInputStyle: { height: vs(80) },
+  categoryContainer: { width: '100%' },
+  createCategoryButton: {
+    position: 'absolute',
+    top: 0,
+    right: s(10),
+    zIndex: 2,
+  },
+  createCategoryText: {
+    color: COLORS.Primary,
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+  },
 });

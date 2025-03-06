@@ -1,3 +1,4 @@
 export * from './_setup';
-export { CategoryReducer } from './category-reducer';
-export { TransactionReducer } from './transaction-reducer';
+export * from './category-reducer';
+export * from './root-state';
+export * from './transaction-reducer';
