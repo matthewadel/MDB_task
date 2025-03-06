@@ -136,7 +136,8 @@ const styles = StyleSheet.create({
   },
 });
 
-// summary view
 // popover issue in add expense screen
 // test the app in dark mode
 // test keyboard
+// fading splash screen
+// export sort and filter in custom hook
