@@ -12,7 +12,7 @@ export const MainStack = () => {
         gestureEnabled: true,
         headerShown: false,
       }}
-      initialRouteName="TransactionList"
+      initialRouteName="Splash"
     >
       <Stack.Screen name="Splash" component={Screens.Splash} />
       <Stack.Screen
