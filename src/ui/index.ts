@@ -6,6 +6,7 @@ export * from './constants';
 export * from './date-picker';
 export * from './drop-down';
 export * from './flash-message';
+export * from './flat-list';
 export * from './image';
 export * from './loading-screen';
 export * from './no-data';

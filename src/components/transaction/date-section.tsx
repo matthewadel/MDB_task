@@ -1,5 +1,11 @@
 import moment from 'moment';
-import React, { Fragment, useRef, useState } from 'react';
+import React, {
+  forwardRef,
+  Fragment,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { StyleSheet } from 'react-native';
 import { s, vs } from 'react-native-size-matters';
 
@@ -12,9 +18,17 @@ import {
   View,
 } from '@/ui';
 
-const DateSection = () => {
+const DateSection = forwardRef((_, ref) => {
   const DatePickerRef = useRef<{ openModal: () => void }>(null);
   const [date, setDate] = useState(formatDate(new Date()));
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      getDate: () => date,
+    }),
+    [date],
+  );
 
   function formatDate(inputDate: Date) {
     return moment(inputDate).format('yyyy MM DD');
@@ -42,7 +56,7 @@ const DateSection = () => {
       />
     </Fragment>
   );
-};
+});
 
 export { DateSection };
 

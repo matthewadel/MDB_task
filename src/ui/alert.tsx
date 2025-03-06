@@ -1,8 +1,11 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import CustomisableAlert from 'react-native-customisable-alert';
+import CustomisableAlert, {
+  closeAlert,
+  showAlert,
+} from 'react-native-customisable-alert';
 
-const Alert = () => {
+const AlertProvider = () => {
   return (
     <CustomisableAlert
       defaultLeftBtnLabel="NO"
@@ -13,7 +16,7 @@ const Alert = () => {
   );
 };
 
-export { Alert };
+export { AlertProvider, closeAlert, showAlert };
 
 const styles = StyleSheet.create({
   titleStyle: {

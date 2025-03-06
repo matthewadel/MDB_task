@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { s, vs } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CategoryCard } from '@/components';
+import { CategoryCard, CategroyCardHeight } from '@/components';
 import { addCategory } from '@/store';
 import { ICategory, IRootState } from '@/types';
-import { Button, ScreenContainer, Text, TextInput } from '@/ui';
+import { Button, FlatList, ScreenContainer, Text, TextInput } from '@/ui';
 
 const CreateCategory = () => {
   const [categoryName, setCategoryName] = useState('');
@@ -27,9 +27,9 @@ const CreateCategory = () => {
     });
   };
 
-  const renderCategory = ({ item }: { item: ICategory }) => {
+  const renderCategory = useCallback(({ item }: { item: ICategory }) => {
     return <CategoryCard category={item} key={item.id} />;
-  };
+  }, []);
 
   return (
     <ScreenContainer screenHeaderProps={{ title: 'Create Category' }}>
@@ -53,7 +53,15 @@ const CreateCategory = () => {
         Available Categories
       </Text>
 
-      <FlatList data={Categories} renderItem={renderCategory} />
+      <FlatList
+        getItemLayout={(_, index) => ({
+          length: CategroyCardHeight,
+          offset: CategroyCardHeight * index,
+          index,
+        })}
+        data={Categories}
+        renderItem={renderCategory}
+      />
     </ScreenContainer>
   );
 };

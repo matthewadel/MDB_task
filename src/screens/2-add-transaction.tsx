@@ -1,53 +1,47 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { StyleSheet } from 'react-native';
-import { s, vs } from 'react-native-size-matters';
-import { useSelector } from 'react-redux';
+import { showMessage } from 'react-native-flash-message';
+import { vs } from 'react-native-size-matters';
+import { useDispatch } from 'react-redux';
 
-import { DateSection } from '@/components';
-import { ICategory, IRootState, TransactionType } from '@/types';
-import {
-  Button,
-  COLORS,
-  DropDown,
-  ScreenContainer,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from '@/ui';
+import { TransactionInputFields } from '@/components';
+import { addTransaction } from '@/store';
+import { ICategory, TransactionType } from '@/types';
+import { Button, ScreenContainer } from '@/ui';
 
-const defaultTransactionTypes = [
-  { id: 1, label: TransactionType.EXPENSE },
-  { id: 2, label: TransactionType.INCOME },
-];
+export interface TransactionInputFieldRef {
+  validateInputs: () => boolean;
+  getAmount: () => string;
+  getDescription: () => string;
+  getTransactionType: () => TransactionType;
+  getCategory: () => ICategory;
+  getDate: () => string;
+}
 
 const AddTransaction = () => {
-  const [amount, setAmount] = useState('');
-  const [description, setDescription] = useState('');
-  const [showErrors, setShowErrors] = useState(false);
-  const [transactionTypes, setTransactionTypes] = useState(
-    defaultTransactionTypes[0],
-  );
-  const [category, setCategory] = useState<ICategory | null>(null);
   const Navigation = useNavigation<any>();
+  const dispatch = useDispatch();
+  const TransactionInputFieldsRef = useRef<TransactionInputFieldRef>(null);
 
-  const { Categories }: { Categories?: ICategory[] } = useSelector(
-    (state: IRootState) => ({
-      Categories: state.Categories.categories,
-    }),
-  );
-
-  const validateInputs = () => {
-    return false;
-  };
-
-  const addTransaction = () => {
-    setShowErrors(false);
-    if (validateInputs()) Navigation.goBack();
-    else
+  const createTransaction = () => {
+    if (TransactionInputFieldsRef.current?.validateInputs()) {
+      dispatch(
+        addTransaction({
+          date: TransactionInputFieldsRef.current?.getDate(),
+          amount: parseFloat(TransactionInputFieldsRef.current?.getAmount()),
+          type: TransactionInputFieldsRef.current?.getTransactionType(),
+          category: TransactionInputFieldsRef.current?.getCategory(),
+          description: TransactionInputFieldsRef.current?.getDescription(),
+        }),
+      );
       setTimeout(() => {
-        setShowErrors(true);
+        showMessage({
+          message: 'Transaction Created Successfully',
+        });
       }, 100);
+      Navigation.goBack();
+    }
   };
 
   return (
@@ -55,62 +49,9 @@ const AddTransaction = () => {
       screenHeaderProps={{ title: 'Add Transaction' }}
       style={styles.containerStyle}
     >
-      <DropDown
-        label={'Transaction Type'}
-        placeholder={'Transaction Type'}
-        options={defaultTransactionTypes}
-        choose={setTransactionTypes}
-        style={styles.topOffset}
-        selectedItem={defaultTransactionTypes[0]}
-      />
+      <TransactionInputFields ref={TransactionInputFieldsRef} />
 
-      <TextInput
-        hasError={!amount}
-        errorMessage={'Amount Is Required'}
-        showErrors={showErrors}
-        title="Amount"
-        value={amount}
-        onChangeText={setAmount}
-        placeholder="Add Amount"
-        containerStyle={styles.topOffset}
-      />
-
-      <View style={{ ...styles.topOffset, ...styles.categoryContainer }}>
-        <TouchableOpacity
-          onPress={() => Navigation.navigate('CreateCategory')}
-          style={styles.createCategoryButton}
-          textStyle={styles.createCategoryText}
-        >
-          Create
-        </TouchableOpacity>
-
-        <DropDown
-          hasError={!category?.id}
-          showErrors={showErrors}
-          label={'Category'}
-          placeholder={'Choose Category'}
-          options={Categories}
-          choose={setCategory}
-          // selectedItem={{
-          //   label: time
-          //     ? `${(time as ITime)?.time_from} - ${(time as ITime)?.time_to}`
-          //     : undefined,
-          // }}
-        />
-      </View>
-
-      <DateSection />
-
-      <TextInput
-        title="Description (optional)"
-        value={description}
-        onChangeText={setDescription}
-        placeholder="Write A Description"
-        style={styles.decriptionInputStyle}
-        containerStyle={styles.topOffset}
-      />
-
-      <Button onPress={addTransaction} style={styles.topOffset}>
+      <Button onPress={createTransaction} style={styles.topOffset}>
         Add Transaction
       </Button>
     </ScreenContainer>
@@ -122,17 +63,4 @@ export { AddTransaction };
 const styles = StyleSheet.create({
   containerStyle: { alignItems: 'center' },
   topOffset: { marginTop: vs(20) },
-  decriptionInputStyle: { height: vs(80) },
-  categoryContainer: { width: '100%' },
-  createCategoryButton: {
-    position: 'absolute',
-    top: 0,
-    right: s(10),
-    zIndex: 2,
-  },
-  createCategoryText: {
-    color: COLORS.Primary,
-    fontWeight: 'bold',
-    textDecorationLine: 'underline',
-  },
 });

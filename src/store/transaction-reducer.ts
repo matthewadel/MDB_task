@@ -11,10 +11,16 @@ const TransactionSlice = createSlice({
   initialState,
   reducers: {
     addTransaction(state, action: PayloadAction<iTransaction>) {
-      // state.notch = action.payload;
+      state.transactions.push({
+        ...action.payload,
+        id: (state.transactions[state.transactions.length - 1]?.id || 0) + 1,
+      });
     },
-    deleteTransaction(state, action: PayloadAction<number>) {
-      // state.actualHeight = action.payload;
+    deleteTransaction(state, action: PayloadAction<{ id?: number }>) {
+      if (action.payload.id)
+        state.transactions = state.transactions.filter(
+          (item) => item.id !== action.payload.id,
+        );
     },
   },
 });

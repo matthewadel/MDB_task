@@ -6,7 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { MainStack } from '@/navigation/main-stack';
 import { persistor, store } from '@/store';
-import { Alert, FlashMessageProvider } from '@/ui';
+import { AlertProvider, FlashMessageProvider } from '@/ui';
 
 const App = () => {
   return (
@@ -15,7 +15,7 @@ const App = () => {
         <SafeAreaProvider>
           <NavigationContainer>
             <FlashMessageProvider />
-            <Alert />
+            <AlertProvider />
             <MainStack />
           </NavigationContainer>
         </SafeAreaProvider>

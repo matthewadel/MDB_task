@@ -1,13 +1,22 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { closeAlert, showAlert } from 'react-native-customisable-alert';
 import { showMessage } from 'react-native-flash-message';
 import { s, vs } from 'react-native-size-matters';
 import { useDispatch } from 'react-redux';
 
 import { deleteCategory } from '@/store';
 import { ICategory } from '@/types';
-import { COLORS, ICONS, Text, VectorIcons, View } from '@/ui';
+import {
+  closeAlert,
+  COLORS,
+  ICONS,
+  showAlert,
+  Text,
+  VectorIcons,
+  View,
+} from '@/ui';
+
+export const CategroyCardHeight = vs(40);
 
 const CategoryCard = ({ category }: { category: ICategory }) => {
   const dispatch = useDispatch();
@@ -22,7 +31,7 @@ const CategoryCard = ({ category }: { category: ICategory }) => {
   };
 
   const deleteCategoryByID = () => {
-    dispatch(deleteCategory(category.id));
+    dispatch(deleteCategory({ id: category.id }));
     closeAlert();
     setTimeout(() => {
       showMessage({
@@ -56,7 +65,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLORS.BorderColor,
     paddingVertical: vs(6),
-    paddingHorizontal: s(5),
+    height: CategroyCardHeight,
   },
   labelStyle: { flex: 1, marginBottom: vs(4) },
 });

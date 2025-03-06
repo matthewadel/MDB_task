@@ -22,9 +22,9 @@ const CategorySlice = createSlice({
           label: action.payload.label,
         });
     },
-    deleteCategory(state, action: PayloadAction<number>) {
+    deleteCategory(state, action: PayloadAction<{ id: number }>) {
       state.categories = state.categories.filter(
-        (item) => item.id !== action.payload,
+        (item) => item.id !== action.payload.id,
       );
     },
   },

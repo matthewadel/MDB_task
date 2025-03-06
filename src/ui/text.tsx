@@ -7,6 +7,7 @@ import { COLORS } from '@/ui';
 const Text = (props: TextProps) => {
   return (
     <RNText
+      ellipsizeMode="tail"
       numberOfLines={1}
       adjustsFontSizeToFit
       allowFontScaling={false}
