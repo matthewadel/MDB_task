@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { Popover as RNPopover } from 'react-native-modal-popover';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { s, vs } from 'react-native-size-matters';
 
 import { ITouchableOpacity } from '@/types';
@@ -58,13 +59,14 @@ const DropDown = (props: IDropDown) => {
     height: 0,
   });
   const [selectedItem, setSelectedItem] = useState(props.selectedItem);
+  const { top } = useSafeAreaInsets();
 
   let hasError = props?.showErrors && props?.hasError;
 
   const setButton = (e: LayoutChangeEvent) => {
     let { x, y, width, height } = e.nativeEvent.layout;
 
-    setPopoverAnchor({ x, y, width, height });
+    setPopoverAnchor({ x, y: y + top + vs(45), width, height });
   };
 
   const openPopover = () => {
@@ -139,6 +141,7 @@ const DropDown = (props: IDropDown) => {
       </TouchableOpacity>
 
       <View onLayout={setButton} />
+
       <RNPopover
         contentStyle={[
           { width: WIDTH - 2 * CONSTANTS.PADDING_HORIZONTAL },

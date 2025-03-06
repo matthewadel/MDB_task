@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { vs } from 'react-native-size-matters';
 
+import { DateSection } from '@/components';
 import { Button, DropDown, ScreenContainer, TextInput } from '@/ui';
 
 const AddTransaction = () => {
@@ -29,6 +30,21 @@ const AddTransaction = () => {
       screenHeaderProps={{ title: 'Add Transaction' }}
       style={styles.containerStyle}
     >
+      <DropDown
+        hasError={true}
+        showErrors={showErrors}
+        label={'Transaction Type'}
+        placeholder={'Transaction Type'}
+        options={[{ id: 1, label: 'ss' }]}
+        choose={() => null}
+        style={styles.topOffset}
+        // selectedItem={{
+        //   label: time
+        //     ? `${(time as ITime)?.time_from} - ${(time as ITime)?.time_to}`
+        //     : undefined,
+        // }}
+      />
+
       <TextInput
         hasError={!amount}
         errorMessage={'Amount Is Required'}
@@ -37,15 +53,17 @@ const AddTransaction = () => {
         value={amount}
         onChangeText={setAmount}
         placeholder="Add Amount"
+        containerStyle={styles.topOffset}
       />
 
       <DropDown
         hasError={true}
         showErrors={showErrors}
-        label={'Transaction Type'}
-        placeholder={'Transaction Type'}
+        label={'Category'}
+        placeholder={'Choose Category'}
         options={[{ id: 1, label: 'ss' }]}
         choose={() => null}
+        style={styles.topOffset}
         // selectedItem={{
         //   label: time
         //     ? `${(time as ITime)?.time_from} - ${(time as ITime)?.time_to}`
@@ -53,29 +71,18 @@ const AddTransaction = () => {
         // }}
       />
 
-      <DropDown
-        hasError={true}
-        showErrors={showErrors}
-        label={'Transaction Type'}
-        placeholder={'Transaction Type'}
-        options={[{ id: 1, label: 'ss' }]}
-        choose={() => null}
-        // selectedItem={{
-        //   label: time
-        //     ? `${(time as ITime)?.time_from} - ${(time as ITime)?.time_to}`
-        //     : undefined,
-        // }}
-      />
+      <DateSection />
 
       <TextInput
         title="Description (optional)"
         value={description}
         onChangeText={setDescription}
         placeholder="Write A Description"
-        style={{ height: vs(80) }}
+        style={styles.decriptionInputStyle}
+        containerStyle={styles.topOffset}
       />
 
-      <Button onPress={addTransaction} style={{ marginBottom: vs(10) }}>
+      <Button onPress={addTransaction} style={styles.topOffset}>
         Add Transaction
       </Button>
     </ScreenContainer>
@@ -85,5 +92,7 @@ const AddTransaction = () => {
 export { AddTransaction };
 
 const styles = StyleSheet.create({
-  containerStyle: { justifyContent: 'space-between', alignItems: 'center' },
+  containerStyle: { alignItems: 'center' },
+  topOffset: { marginTop: vs(20) },
+  decriptionInputStyle: { height: vs(80) },
 });
