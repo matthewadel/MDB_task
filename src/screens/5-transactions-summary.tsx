@@ -1,8 +1,14 @@
 import React from 'react';
-import { View } from 'react-native';
+
+import { ScreenContainer } from '@/ui';
 
 const TransactionsSummary = () => {
-  return <View />;
+  return (
+    <ScreenContainer screenHeaderProps={{ title: 'Summary View' }}>
+      {/* pie chart for total expenses and incomes */}
+      {/* pie chart of expenses by category */}
+    </ScreenContainer>
+  );
 };
 
 export { TransactionsSummary };
