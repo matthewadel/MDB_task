@@ -12,7 +12,7 @@ import { s, vs } from 'react-native-size-matters';
 import { useSelector } from 'react-redux';
 
 import { DateSection } from '@/components';
-import { ICategory, IRootState, TransactionType } from '@/types';
+import { ICategory, IRootState, ITransaction, TransactionType } from '@/types';
 import { COLORS, DropDown, TextInput, TouchableOpacity, View } from '@/ui';
 
 const defaultTransactionTypes = [
@@ -20,18 +20,32 @@ const defaultTransactionTypes = [
   { id: 2, label: TransactionType.INCOME },
 ];
 
-const TransactionInputFields = forwardRef((props, ref) => {
+interface ITransactionFields {
+  transaction: Partial<ITransaction>;
+}
+
+const TransactionInputFields = forwardRef((props: ITransactionFields, ref) => {
   const Navigation = useNavigation<any>();
 
-  const [amount, setAmount] = useState('');
-  const [description, setDescription] = useState('');
+  const [amount, setAmount] = useState(
+    props.transaction.amount?.toString() || '',
+  );
+  const [description, setDescription] = useState(
+    props.transaction.description || '',
+  );
   const [showErrors, setShowErrors] = useState(false);
   const DateSectionRef = useRef<{ getDate: Function }>(null);
 
   const [transactionType, setTransactionType] = useState(
-    defaultTransactionTypes[0],
+    props.transaction.type
+      ? defaultTransactionTypes.find(
+          (item) => item.label === props.transaction.type,
+        )
+      : defaultTransactionTypes[0],
   );
-  const [category, setCategory] = useState<ICategory>();
+  const [category, setCategory] = useState<ICategory | undefined>(
+    props.transaction.category,
+  );
   const { Categories }: { Categories?: ICategory[] } = useSelector(
     (state: IRootState) => ({
       Categories: state.Categories.categories,
@@ -55,7 +69,7 @@ const TransactionInputFields = forwardRef((props, ref) => {
       validateInputs,
       getAmount: () => amount,
       getDescription: () => description,
-      getTransactionType: () => transactionType,
+      getTransactionType: () => transactionType?.label,
       getCategory: () => category,
       getDate: () => DateSectionRef.current?.getDate(),
     }),
@@ -70,7 +84,7 @@ const TransactionInputFields = forwardRef((props, ref) => {
         options={defaultTransactionTypes}
         choose={setTransactionType}
         style={styles.topOffset}
-        selectedItem={defaultTransactionTypes[0]}
+        selectedItem={transactionType}
       />
 
       <TextInput
@@ -100,10 +114,11 @@ const TransactionInputFields = forwardRef((props, ref) => {
           placeholder={'Choose Category'}
           options={Categories}
           choose={setCategory}
+          selectedItem={category}
         />
       </View>
 
-      <DateSection ref={DateSectionRef} />
+      <DateSection date={props.transaction.date} ref={DateSectionRef} />
 
       <TextInput
         title="Description (optional)"

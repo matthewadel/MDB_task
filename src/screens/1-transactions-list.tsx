@@ -5,18 +5,18 @@ import { s, vs } from 'react-native-size-matters';
 import { useSelector } from 'react-redux';
 
 import { TransactionCard } from '@/components';
-import { IRootState, iTransaction } from '@/types';
+import { IRootState, ITransaction } from '@/types';
 import { COLORS, FlatList, ICONS, ScreenContainer, VectorIcons } from '@/ui';
 
 const TransactionList = () => {
   const Navigation = useNavigation<any>();
-  const { transactions }: { transactions?: iTransaction[] } = useSelector(
+  const { transactions }: { transactions?: ITransaction[] } = useSelector(
     (state: IRootState) => ({
       transactions: state.Transactions.transactions,
     }),
   );
 
-  const renderTransaction = useCallback(({ item }: { item: iTransaction }) => {
+  const renderTransaction = useCallback(({ item }: { item: ITransaction }) => {
     return <TransactionCard transaction={item} key={item.id} />;
   }, []);
 

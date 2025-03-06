@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { iTransaction, ITransactionReducer } from '@/types';
+import { ITransaction, ITransactionReducer } from '@/types';
 
 const initialState: ITransactionReducer = {
   transactions: [],
@@ -10,7 +10,7 @@ const TransactionSlice = createSlice({
   name: 'Transactions',
   initialState,
   reducers: {
-    addTransaction(state, action: PayloadAction<iTransaction>) {
+    addTransaction(state, action: PayloadAction<ITransaction>) {
       state.transactions.push({
         ...action.payload,
         id: (state.transactions[state.transactions.length - 1]?.id || 0) + 1,
@@ -22,9 +22,21 @@ const TransactionSlice = createSlice({
           (item) => item.id !== action.payload.id,
         );
     },
+    updateTransaction(
+      state,
+      action: PayloadAction<{ id?: number; transaction: ITransaction }>,
+    ) {
+      if (action.payload.id)
+        state.transactions = state.transactions.map((item) => {
+          if (item.id === action.payload.id)
+            return { ...item, ...action.payload.transaction };
+          else return item;
+        });
+    },
   },
 });
 
-export const { addTransaction, deleteTransaction } = TransactionSlice.actions;
+export const { addTransaction, deleteTransaction, updateTransaction } =
+  TransactionSlice.actions;
 
 export default TransactionSlice.reducer;

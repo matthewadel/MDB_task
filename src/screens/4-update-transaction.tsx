@@ -12,8 +12,8 @@ import { useDispatch } from 'react-redux';
 
 import { TransactionInputFields } from '@/components';
 import { TransactionInputFieldRef } from '@/screens';
-import { addTransaction, deleteTransaction } from '@/store';
-import { iTransaction } from '@/types';
+import { deleteTransaction, updateTransaction } from '@/store';
+import { ITransaction } from '@/types';
 import {
   Button,
   closeAlert,
@@ -25,7 +25,7 @@ import {
 
 interface IParams extends RouteProp<ParamListBase> {
   params: {
-    transaction: iTransaction;
+    transaction: ITransaction;
   };
 }
 
@@ -39,17 +39,20 @@ const UpdateTransaction = () => {
   const updateTransactionByID = () => {
     if (TransactionInputFieldsRef.current?.validateInputs()) {
       dispatch(
-        addTransaction({
-          date: TransactionInputFieldsRef.current?.getDate(),
-          amount: parseFloat(TransactionInputFieldsRef.current?.getAmount()),
-          type: TransactionInputFieldsRef.current?.getTransactionType(),
-          category: TransactionInputFieldsRef.current?.getCategory(),
-          description: TransactionInputFieldsRef.current?.getDescription(),
+        updateTransaction({
+          id: params.transaction.id,
+          transaction: {
+            date: TransactionInputFieldsRef.current?.getDate(),
+            amount: parseFloat(TransactionInputFieldsRef.current?.getAmount()),
+            type: TransactionInputFieldsRef.current?.getTransactionType(),
+            category: TransactionInputFieldsRef.current?.getCategory(),
+            description: TransactionInputFieldsRef.current?.getDescription(),
+          },
         }),
       );
       setTimeout(() => {
         showMessage({
-          message: 'Transaction Created Successfully',
+          message: 'Transaction Updated Successfully',
         });
       }, 100);
       Navigation.goBack();
@@ -81,11 +84,14 @@ const UpdateTransaction = () => {
       screenHeaderProps={{ title: 'Update Transaction' }}
       style={styles.containerStyle}
     >
-      <TransactionInputFields ref={TransactionInputFieldsRef} />
+      <TransactionInputFields
+        transaction={params.transaction}
+        ref={TransactionInputFieldsRef}
+      />
 
       <View style={styles.buttonsContainer}>
         <Button onPress={updateTransactionByID} style={styles.topOffset}>
-          Add Transaction
+          Update
         </Button>
         <Button
           onPress={deleteCategoryWarning}

@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { s, vs } from 'react-native-size-matters';
 
-import { iTransaction, TransactionType } from '@/types';
+import { ITransaction, TransactionType } from '@/types';
 import {
   COLORS,
   CONSTANTS,
@@ -15,7 +15,7 @@ import {
   View,
 } from '@/ui';
 
-const TransactionCard = ({ transaction }: { transaction: iTransaction }) => {
+const TransactionCard = ({ transaction }: { transaction: ITransaction }) => {
   let isIncome = transaction.type === TransactionType.INCOME;
   const Navigation = useNavigation<any>();
   return (

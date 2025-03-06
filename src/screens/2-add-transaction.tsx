@@ -9,6 +9,7 @@ import { TransactionInputFields } from '@/components';
 import { addTransaction } from '@/store';
 import { ICategory, TransactionType } from '@/types';
 import { Button, ScreenContainer } from '@/ui';
+import { formatDate } from '@/utils';
 
 export interface TransactionInputFieldRef {
   validateInputs: () => boolean;
@@ -49,7 +50,10 @@ const AddTransaction = () => {
       screenHeaderProps={{ title: 'Add Transaction' }}
       style={styles.containerStyle}
     >
-      <TransactionInputFields ref={TransactionInputFieldsRef} />
+      <TransactionInputFields
+        transaction={{ date: formatDate(new Date()) }}
+        ref={TransactionInputFieldsRef}
+      />
 
       <Button onPress={createTransaction} style={styles.topOffset}>
         Add Transaction

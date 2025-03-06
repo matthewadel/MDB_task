@@ -1,6 +1,6 @@
 import { ICategory } from './category';
 
-export interface iTransaction {
+export interface ITransaction {
   id?: number;
   date: string;
   amount: number;

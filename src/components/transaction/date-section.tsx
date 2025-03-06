@@ -1,4 +1,3 @@
-import moment from 'moment';
 import React, {
   forwardRef,
   Fragment,
@@ -17,10 +16,15 @@ import {
   TouchableOpacity,
   View,
 } from '@/ui';
+import { formatDate } from '@/utils';
 
-const DateSection = forwardRef((_, ref) => {
+interface IDateSection {
+  date?: string;
+}
+
+const DateSection = forwardRef((props: IDateSection, ref) => {
   const DatePickerRef = useRef<{ openModal: () => void }>(null);
-  const [date, setDate] = useState(formatDate(new Date()));
+  const [date, setDate] = useState(props.date);
 
   useImperativeHandle(
     ref,
@@ -29,10 +33,6 @@ const DateSection = forwardRef((_, ref) => {
     }),
     [date],
   );
-
-  function formatDate(inputDate: Date) {
-    return moment(inputDate).format('yyyy MM DD');
-  }
 
   return (
     <Fragment>

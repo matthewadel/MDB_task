@@ -1,5 +1,5 @@
-import { iTransaction } from '@/types';
+import { ITransaction } from '@/types';
 
 export interface ITransactionReducer {
-  transactions: iTransaction[];
+  transactions: ITransaction[];
 }
