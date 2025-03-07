@@ -1,18 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
 import { s, vs } from 'react-native-size-matters';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { CategoryCard, CategroyCardHeight } from '@/components';
-import { addCategory } from '@/store';
+import { useCategories } from '@/hooks';
 import { ICategory, IRootState } from '@/types';
 import { Button, FlatList, ScreenContainer, Text, TextInput } from '@/ui';
 
 const CreateCategory = () => {
   const [categoryName, setCategoryName] = useState('');
-  const dispatch = useDispatch();
-
+  const { createCategory: createCategoryHook } = useCategories();
   const { Categories }: { Categories?: ICategory[] } = useSelector(
     (state: IRootState) => ({
       Categories: state.Categories.categories,
@@ -20,11 +18,8 @@ const CreateCategory = () => {
   );
 
   const createCategory = () => {
-    dispatch(addCategory({ label: categoryName }));
+    createCategoryHook(categoryName);
     setCategoryName('');
-    showMessage({
-      message: 'Category Created Successfully',
-    });
   };
 
   const renderCategory = useCallback(({ item }: { item: ICategory }) => {

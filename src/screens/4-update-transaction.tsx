@@ -6,22 +6,13 @@ import {
 } from '@react-navigation/native';
 import React, { useRef } from 'react';
 import { StyleSheet } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
 import { vs } from 'react-native-size-matters';
-import { useDispatch } from 'react-redux';
 
 import { TransactionInputFields } from '@/components';
+import { useTransactions } from '@/hooks';
 import { TransactionInputFieldRef } from '@/screens';
-import { deleteTransaction, updateTransaction } from '@/store';
 import { ITransaction } from '@/types';
-import {
-  Button,
-  closeAlert,
-  COLORS,
-  ScreenContainer,
-  showAlert,
-  View,
-} from '@/ui';
+import { Button, COLORS, ScreenContainer, View } from '@/ui';
 
 interface IParams extends RouteProp<ParamListBase> {
   params: {
@@ -32,51 +23,24 @@ interface IParams extends RouteProp<ParamListBase> {
 const UpdateTransaction = () => {
   const Navigation = useNavigation<any>();
   let { params } = useRoute<IParams>();
+  const { deleteTransaction, updateTransaction } = useTransactions();
 
-  const dispatch = useDispatch();
   const TransactionInputFieldsRef = useRef<TransactionInputFieldRef>(null);
 
   const updateTransactionByID = () => {
     if (TransactionInputFieldsRef.current?.validateInputs()) {
-      dispatch(
-        updateTransaction({
-          id: params.transaction.id,
-          transaction: {
-            date: TransactionInputFieldsRef.current?.getDate(),
-            amount: parseFloat(TransactionInputFieldsRef.current?.getAmount()),
-            type: TransactionInputFieldsRef.current?.getTransactionType(),
-            category: TransactionInputFieldsRef.current?.getCategory(),
-            description: TransactionInputFieldsRef.current?.getDescription(),
-          },
-        }),
-      );
-      setTimeout(() => {
-        showMessage({
-          message: 'Transaction Updated Successfully',
-        });
-      }, 100);
+      updateTransaction({
+        id: params.transaction.id,
+        transaction: {
+          date: TransactionInputFieldsRef.current?.getDate(),
+          amount: parseFloat(TransactionInputFieldsRef.current?.getAmount()),
+          type: TransactionInputFieldsRef.current?.getTransactionType(),
+          category: TransactionInputFieldsRef.current?.getCategory(),
+          description: TransactionInputFieldsRef.current?.getDescription(),
+        },
+      });
       Navigation.goBack();
     }
-  };
-
-  const deleteCategoryWarning = () => {
-    showAlert({
-      title: 'Are you sure?',
-      message: `This Transaction Will Be Deleted!`,
-      alertType: 'warning',
-      onPress: deleteTransactionByID,
-    });
-  };
-
-  const deleteTransactionByID = () => {
-    dispatch(deleteTransaction({ id: params.transaction.id }));
-    Navigation.goBack();
-    closeAlert();
-    setTimeout(() => {
-      showMessage({
-        message: 'Transaction Created Successfully',
-      });
-    }, 100);
   };
 
   return (
@@ -94,7 +58,7 @@ const UpdateTransaction = () => {
           Update
         </Button>
         <Button
-          onPress={deleteCategoryWarning}
+          onPress={() => deleteTransaction(params.transaction.id)}
           style={[styles.topOffset, styles.deleteButtonStyle]}
         >
           Delete
